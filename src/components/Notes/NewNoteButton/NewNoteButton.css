@@ -1,0 +1,18 @@
+.plus-circle {
+	background-color: aliceblue;
+	border-radius: 100%;
+	display: grid;
+	place-items: center;
+	position: absolute;
+	bottom: 3rem;
+	right: 3rem;
+	width: 5rem;
+	height: 5rem;
+}
+
+.plus-circle i {
+	scale: 3;
+	background-color: rgba(0, 0, 0, 0);
+	text-shadow: 0px 0px 8px black;
+	color: rgb(233, 233, 3);
+}
