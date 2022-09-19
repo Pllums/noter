@@ -1,26 +1,39 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from "react";
+import logo from "./logo.svg";
+import "./App.css";
+import Header from "./components/Header";
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+	// interface IState {
+	// 	user: { name: string };
+	// }
+
+	// const [name, setName] = useState<IState["user"]>();
+	// const [user, setUser] = useState("");
+	// const handleChange = (e) => {
+	// 	const newName = e.target.value;
+	// 	setName(newName);
+	// };
+
+	// function handleNewUser(){
+	// 	setUser(name);
+	// }
+
+	return (
+		<div className="App">
+			<header className="App-header">
+				<div>
+					<form>
+						<input
+							name="name"
+							type="text"
+							placeholder="Enter your name"></input>
+						<button>Submit</button>
+					</form>
+				</div>
+			</header>
+		</div>
+	);
 }
 
 export default App;
