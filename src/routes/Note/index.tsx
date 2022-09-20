@@ -1,10 +1,9 @@
 import { useState } from "react";
-import { AnimatePresence } from "framer-motion";
 import NewNote from "../../components/Notes/NewNote";
 import NewNoteButton from "../../components/Notes/NewNoteButton";
-import "./Notes.css";
+import "../Notes/Notes.css";
 
-export default function NotesPage() {
+function NotePage() {
 	interface IState {
 		clicked: boolean;
 	}
@@ -12,16 +11,17 @@ export default function NotesPage() {
 
 	function handleOpen() {
 		setClicked(true);
+		console.log(clicked);
 	}
 	function handleClose() {
 		setClicked(false);
 	}
-
 	return (
 		<section id="notes-page">
-			<AnimatePresence></AnimatePresence>
 			<NewNote addNote={handleClose} />
 			<NewNoteButton openNew={handleOpen} />
 		</section>
 	);
 }
+
+export default NotePage;
