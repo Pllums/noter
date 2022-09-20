@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { AnimatePresence } from "framer-motion";
 import NewNote from "../../components/Notes/NewNote";
 import NewNoteButton from "../../components/Notes/NewNoteButton";
 import "./Notes.css";
@@ -12,6 +11,7 @@ export default function NotesPage() {
 
 	function handleOpen() {
 		setClicked(true);
+		console.log(clicked);
 	}
 	function handleClose() {
 		setClicked(false);
