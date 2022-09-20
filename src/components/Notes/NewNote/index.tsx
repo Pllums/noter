@@ -1,5 +1,4 @@
-import { useState } from "react";
-import { AnimatePresence, motion } from "framer-motion";
+import { motion } from "framer-motion";
 import "./NewNote.css";
 
 interface IProps {
@@ -11,10 +10,9 @@ export default function NewNote(props: IProps) {
 		<motion.div
 			layoutId="newNote"
 			className="note-form-wrapper"
-			initial={{ scale: 0, opacity: 0 }}
 			animate={{ scale: 1, opacity: 1 }}
 			exit={{ opacity: 0 }}
-			transition={{ duration: 0.5 }}>
+			transition={{ type: "spring", stiffness: 115, damping: 13 }}>
 			<motion.div className="note-form-title">
 				<input type="text" placeholder="Note Title"></input>
 			</motion.div>

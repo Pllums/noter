@@ -1,6 +1,4 @@
-import { useState } from "react";
-import { AnimatePresence, motion } from "framer-motion";
-import NewNote from "../NewNote";
+import { motion } from "framer-motion";
 import "./NewNoteButton.css";
 
 interface IProps {
