@@ -8,15 +8,33 @@ import "./Notes.css";
 
 export default function NotesPage() {
 	interface IState {
+		layoutId: string;
 		clicked: boolean;
+		notesArray: { title: string; content: string }[];
+		singleNote: { title: string; content: string };
 	}
+
 	const [clicked, setClicked] = useState<IState["clicked"]>(false);
 
+	const [layoutId, setLayoutId] = useState<IState["layoutId"]>("");
+
+	const [notes, setNotes] = useState<IState["notesArray"]>([
+		{ title: "", content: "" },
+	]);
+
 	function handleOpen() {
+		setLayoutId("newNote");
 		setClicked(true);
-		console.log(clicked);
 	}
-	function handleSave() {
+
+	function handleSave(newNote: any) {
+		setNotes((prevNotes) => {
+			return [...prevNotes, newNote];
+		});
+		setClicked(false);
+	}
+
+	function cancelNote() {
 		setClicked(false);
 	}
 
@@ -24,14 +42,24 @@ export default function NotesPage() {
 		<section id="notes-page">
 			<div className="notes-grid">
 				{savedNotes.map((note) => (
-					<SavedNote title={note.title} content={note.content} />
+					<SavedNote
+						title={note.title}
+						content={note.content}
+						// deleteNote={deleteNote}
+					/>
 				))}
 			</div>
 			<AnimatePresence>
 				<NewNoteButton openNew={handleOpen} />
 			</AnimatePresence>
 			<AnimatePresence>
-				{clicked && <NewNote addNote={handleSave} />}
+				{clicked === true && (
+					<NewNote
+						layoutId={layoutId}
+						cancelNote={cancelNote}
+						addNote={handleSave}
+					/>
+				)}
 			</AnimatePresence>
 		</section>
 	);
