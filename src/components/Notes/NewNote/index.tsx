@@ -15,7 +15,7 @@ interface IState {
 export default function NewNote(props: IProps) {
 	const [note, setNote] = useState<IState["note"]>({ title: "", content: "" });
 
-	function handleChange(e: any) {
+	function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
 		const { name, value } = e.target;
 		setNote((prevNote) => {
 			return { ...prevNote, [name]: value };
@@ -25,10 +25,6 @@ export default function NewNote(props: IProps) {
 	function abortNote() {
 		setNote({ title: "", content: "" });
 		props.cancelNote();
-	}
-
-	function saveNote(note: any) {
-		props.addNote(note);
 	}
 
 	return (
@@ -56,7 +52,7 @@ export default function NewNote(props: IProps) {
 					placeholder="Type your note here"></input>
 			</motion.div>
 			<button onClick={abortNote}>Cancel</button>
-			<button onClick={props.addNote(note)}>Save</button>
+			<button onClick={() => props.addNote(note)}>Save</button>
 			{/* </motion.form> */}
 		</motion.div>
 	);

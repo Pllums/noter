@@ -3,24 +3,21 @@ import { useState } from "react";
 import NewNote from "../../components/Notes/NewNote";
 import NewNoteButton from "../../components/Notes/NewNoteButton";
 import SavedNote from "../../components/Notes/SavedNote";
-import savedNotes from "../../components/Notes/SavedNote/savedNotes";
 import "./Notes.css";
 
-export default function NotesPage() {
-	interface IState {
-		layoutId: string;
-		clicked: boolean;
-		notesArray: { title: string; content: string }[];
-		singleNote: { title: string; content: string };
-	}
+interface IState {
+	layoutId: string;
+	clicked: boolean;
+	notesArray: { title: string; content: string }[];
+	singleNote: { title: string; content: string };
+}
 
+export default function NotesPage() {
 	const [clicked, setClicked] = useState<IState["clicked"]>(false);
 
 	const [layoutId, setLayoutId] = useState<IState["layoutId"]>("");
 
-	const [notes, setNotes] = useState<IState["notesArray"]>([
-		{ title: "", content: "" },
-	]);
+	const [notes, setNotes] = useState<IState["notesArray"]>([]);
 
 	function handleOpen() {
 		setLayoutId("newNote");
@@ -28,6 +25,7 @@ export default function NotesPage() {
 	}
 
 	function handleSave(newNote: any) {
+		// stop the function from adding an empty note to the notes array
 		setNotes((prevNotes) => {
 			return [...prevNotes, newNote];
 		});
@@ -41,8 +39,9 @@ export default function NotesPage() {
 	return (
 		<section id="notes-page">
 			<div className="notes-grid">
-				{savedNotes.map((note) => (
+				{notes.map((note, key: number) => (
 					<SavedNote
+						key={key}
 						title={note.title}
 						content={note.content}
 						// deleteNote={deleteNote}
@@ -53,7 +52,7 @@ export default function NotesPage() {
 				<NewNoteButton openNew={handleOpen} />
 			</AnimatePresence>
 			<AnimatePresence>
-				{clicked === true && (
+				{clicked && (
 					<NewNote
 						layoutId={layoutId}
 						cancelNote={cancelNote}
