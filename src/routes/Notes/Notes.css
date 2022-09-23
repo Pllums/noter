@@ -1,7 +1,8 @@
 #notes-page {
 	background-color: gray;
+	padding: 2rem;
 	position: relative;
-	width: 100%;
+	max-width: 2560px;
 	min-height: 100vh;
 }
 

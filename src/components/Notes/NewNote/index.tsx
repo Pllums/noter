@@ -21,12 +21,18 @@ export default function NewNote(props: IProps) {
 			return { ...prevNote, [name]: value };
 		});
 	}
-
+	//Cancel saving the note
 	function abortNote() {
 		setNote({ title: "", content: "" });
 		props.cancelNote();
 	}
 
+	// No blank notes
+	function saveNote() {
+		if (note.title !== "" && note.content !== "") {
+			props.addNote(note);
+		} else console.log("One or more fields is empty. Note not saved.");
+	}
 	return (
 		<motion.div
 			layoutId={props.layoutId}
@@ -52,7 +58,7 @@ export default function NewNote(props: IProps) {
 					placeholder="Type your note here"></input>
 			</motion.div>
 			<button onClick={abortNote}>Cancel</button>
-			<button onClick={() => props.addNote(note)}>Save</button>
+			<button onClick={saveNote}>Save</button>
 			{/* </motion.form> */}
 		</motion.div>
 	);

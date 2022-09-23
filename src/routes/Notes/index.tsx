@@ -25,28 +25,40 @@ export default function NotesPage() {
 	}
 
 	function handleSave(newNote: any) {
-		// stop the function from adding an empty note to the notes array
 		setNotes((prevNotes) => {
 			return [...prevNotes, newNote];
 		});
+		window.localStorage.setItem("NOTER_NOTE_LIST", JSON.stringify(notes));
 		setClicked(false);
 	}
 
+	function deleteNote(note: any) {
+		setNotes((prevNotes) => {
+			return prevNotes.filter((noteItem, index) => {
+				return index !== note;
+			});
+		});
+	}
 	function cancelNote() {
 		setClicked(false);
 	}
-
+	const notesList: [{ title: string; content: string }] = JSON.parse(
+		localStorage.getItem("NOTER_NOTE_LIST") || "{}"
+	);
 	return (
 		<section id="notes-page">
 			<div className="notes-grid">
-				{notes.map((note, key: number) => (
-					<SavedNote
-						key={key}
-						title={note.title}
-						content={note.content}
-						// deleteNote={deleteNote}
-					/>
-				))}
+				<AnimatePresence>
+					{notesList.map((note, key: number) => (
+						<SavedNote
+							key={key}
+							position={key}
+							title={note.title}
+							content={note.content}
+							deleteNote={deleteNote}
+						/>
+					))}
+				</AnimatePresence>
 			</div>
 			<AnimatePresence>
 				<NewNoteButton openNew={handleOpen} />
