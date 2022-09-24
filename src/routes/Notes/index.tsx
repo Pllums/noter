@@ -19,6 +19,17 @@ export default function NotesPage() {
 
 	const [notes, setNotes] = useState<IState["notesArray"]>([]);
 
+	useEffect(() => {
+		const data = localStorage.getItem("NOTES_LIST");
+		if (data !== null) {
+			setNotes(JSON.parse(data!));
+		}
+	}, []);
+
+	useEffect(() => {
+		localStorage.setItem("NOTES_LIST", JSON.stringify(notes));
+	}, [notes]);
+
 	function handleOpen() {
 		setLayoutId("newNote");
 		setClicked(true);
@@ -41,14 +52,6 @@ export default function NotesPage() {
 	function cancelNote() {
 		setClicked(false);
 	}
-	useEffect(() => {
-		// window.localStorage.getItem("NOTES_LIST");
-		setNotes(JSON.parse(window.localStorage.getItem("NOTES_LIST")!));
-	}, []);
-
-	useEffect(() => {
-		window.localStorage.setItem("NOTES_LIST", JSON.stringify(notes));
-	}, [notes]);
 
 	return (
 		<section id="notes-page">
