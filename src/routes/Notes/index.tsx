@@ -1,5 +1,5 @@
 import { AnimatePresence } from "framer-motion";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import NewNote from "../../components/Notes/NewNote";
 import NewNoteButton from "../../components/Notes/NewNoteButton";
 import SavedNote from "../../components/Notes/SavedNote";
@@ -28,7 +28,6 @@ export default function NotesPage() {
 		setNotes((prevNotes) => {
 			return [...prevNotes, newNote];
 		});
-		window.localStorage.setItem("NOTER_NOTE_LIST", JSON.stringify(notes));
 		setClicked(false);
 	}
 
@@ -42,14 +41,20 @@ export default function NotesPage() {
 	function cancelNote() {
 		setClicked(false);
 	}
-	const notesList: [{ title: string; content: string }] = JSON.parse(
-		localStorage.getItem("NOTER_NOTE_LIST") || "{}"
-	);
+	useEffect(() => {
+		// window.localStorage.getItem("NOTES_LIST");
+		setNotes(JSON.parse(window.localStorage.getItem("NOTES_LIST")!));
+	}, []);
+
+	useEffect(() => {
+		window.localStorage.setItem("NOTES_LIST", JSON.stringify(notes));
+	}, [notes]);
+
 	return (
 		<section id="notes-page">
 			<div className="notes-grid">
 				<AnimatePresence>
-					{notesList.map((note, key: number) => (
+					{notes.map((note, key: number) => (
 						<SavedNote
 							key={key}
 							position={key}
