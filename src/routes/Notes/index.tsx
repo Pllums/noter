@@ -1,5 +1,5 @@
 import { AnimatePresence } from "framer-motion";
-import { useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import NewNote from "../../components/Notes/NewNote";
 import NewNoteButton from "../../components/Notes/NewNoteButton";
 import SavedNote from "../../components/Notes/SavedNote";
@@ -18,6 +18,14 @@ export default function NotesPage() {
 	const [layoutId, setLayoutId] = useState<IState["layoutId"]>("");
 
 	const [notes, setNotes] = useState<IState["notesArray"]>([]);
+
+	const [darkTheme, setDarkTheme] = useState<boolean>(true);
+
+	const ThemeContext = createContext();
+
+	function toggleTheme() {
+		setDarkTheme((prevTheme) => !prevTheme);
+	}
 
 	useEffect(() => {
 		const data = localStorage.getItem("NOTES_LIST");

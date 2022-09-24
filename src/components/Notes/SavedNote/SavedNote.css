@@ -1,12 +1,20 @@
 .saved-note-wrapper {
+	padding: 0.75rem;
+	background-color: rgb(189, 189, 105);
+	border-radius: 0.25rem;
+	box-shadow: 10px 0px 25px solid black;
 }
 
 .note-title {
+	text-align: center;
+	margin: auto;
 }
 
 .note-content {
 }
 .close-button {
-	background-color: none;
+	margin: 0.2rem;
+	text-align: end;
+	background: none;
 	border: none;
 }

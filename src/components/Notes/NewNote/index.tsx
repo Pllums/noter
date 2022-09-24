@@ -15,7 +15,11 @@ interface IState {
 export default function NewNote(props: IProps) {
 	const [note, setNote] = useState<IState["note"]>({ title: "", content: "" });
 
-	function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
+	function handleChange(
+		e:
+			| React.ChangeEvent<HTMLInputElement>
+			| React.ChangeEvent<HTMLTextAreaElement>
+	) {
 		const { name, value } = e.target;
 		setNote((prevNote) => {
 			return { ...prevNote, [name]: value };
@@ -39,7 +43,7 @@ export default function NewNote(props: IProps) {
 			className="note-form-wrapper"
 			animate={{ scale: 1, opacity: 1 }}
 			exit={{ opacity: 0 }}
-			transition={{ type: "spring", stiffness: 115, damping: 13 }}>
+			transition={{ type: "spring", stiffness: 115, damping: 15 }}>
 			{/* <motion.form> */}
 			<motion.div className="note-form-title">
 				<input
@@ -47,15 +51,16 @@ export default function NewNote(props: IProps) {
 					name="title"
 					value={note.title}
 					type="text"
-					placeholder="Note Title"></input>
+					placeholder="Note Title"
+					maxLength={25}></input>
 			</motion.div>
 			<motion.div className="note-form-content">
-				<input
+				<textarea
 					onChange={handleChange}
 					name="content"
 					value={note.content}
-					type="textarea"
-					placeholder="Type your note here"></input>
+					placeholder="Type your note here"
+					maxLength={500}></textarea>
 			</motion.div>
 			<button onClick={abortNote}>Cancel</button>
 			<button onClick={saveNote}>Save</button>

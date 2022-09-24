@@ -18,6 +18,7 @@ function SavedNote(props: IProps) {
 
 	return (
 		<motion.div
+			drag={true}
 			exit={{ opacity: 0 }}
 			layoutId={note.title}
 			className="saved-note-wrapper">
