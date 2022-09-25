@@ -1,8 +1,10 @@
 import { AnimatePresence } from "framer-motion";
-import { createContext, useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import NewNote from "../../components/Notes/NewNote";
 import NewNoteButton from "../../components/Notes/NewNoteButton";
 import SavedNote from "../../components/Notes/SavedNote";
+import { useTheme, Theme } from "../../components/ThemeProvider/ThemeContext";
+
 import "./Notes.css";
 
 interface IState {
@@ -19,13 +21,7 @@ export default function NotesPage() {
 
 	const [notes, setNotes] = useState<IState["notesArray"]>([]);
 
-	const [darkTheme, setDarkTheme] = useState<boolean>(true);
-
-	const ThemeContext = createContext();
-
-	function toggleTheme() {
-		setDarkTheme((prevTheme) => !prevTheme);
-	}
+	const { theme, setTheme } = useTheme();
 
 	useEffect(() => {
 		const data = localStorage.getItem("NOTES_LIST");
@@ -63,6 +59,10 @@ export default function NotesPage() {
 
 	return (
 		<section id="notes-page">
+			<header>
+				<button onClick={() => setTheme(Theme.Dark)}>Dark Mode</button>
+				<button onClick={() => setTheme(Theme.Light)}>Light Mode</button>
+			</header>
 			<div className="notes-grid">
 				<AnimatePresence>
 					{notes.map((note, key: number) => (

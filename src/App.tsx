@@ -1,39 +1,17 @@
 import React, { useState } from "react";
 import "./App.css";
-import Header from "./components/Header";
+// import Header from "./components/Header";
+import { ThemeContext, Theme } from "./components/ThemeProvider/ThemeContext";
+import NotesPage from "./routes/Notes";
 
 function App() {
-  // interface IState {
-  // 	user: { name: string };
-  // }
+	const [theme, setTheme] = useState(Theme.Light);
 
-  // const [name, setName] = useState<IState["user"]>();
-  // const [user, setUser] = useState("");
-  // const handleChange = (e) => {
-  // 	const newName = e.target.value;
-  // 	setName(newName);
-  // };
-
-  // function handleNewUser(){
-  // 	setUser(name);
-  // }
-
-  return (
-    <div className="App">
-      <header className="App-header">
-        <div>
-          <form>
-            <input
-              name="name"
-              type="text"
-              placeholder="Enter your name"
-            ></input>
-            <button>Submit</button>
-          </form>
-        </div>
-      </header>
-    </div>
-  );
+	return (
+		<ThemeContext.Provider value={{ theme, setTheme }}>
+			<NotesPage />
+		</ThemeContext.Provider>
+	);
 }
 
 export default App;
