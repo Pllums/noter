@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import "./App.css";
 // import Header from "./components/Header";
 import { ThemeContext, Theme } from "./components/ThemeProvider/ThemeContext";
+import Greeting from "./routes/Greeting";
 import NotesPage from "./routes/Notes";
 
 function App() {

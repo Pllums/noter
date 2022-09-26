@@ -1,22 +1,18 @@
-#notes-page {
-	background-color: gray;
-	padding: 2rem;
+.notes-page {
+	background-color: whitesmoke;
 	position: relative;
 	max-width: 100vw;
 	min-height: 100vh;
+	overflow-x: hidden;
 }
 
 .notes-grid {
 	display: grid;
 	grid-template-columns: repeat(6, 1fr);
 	gap: 1.5rem;
+	padding: 2rem;
 }
 
-header {
-	position: absolute;
-	top: 0;
-	right: 0;
-	width: 100%;
-	text-align: end;
-	padding: 0.75rem;
+.notes-page-dark-mode {
+	background-color: rgb(5, 1, 22);
 }

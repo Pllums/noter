@@ -1,0 +1,21 @@
+.greeting-wrapper {
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	text-align: center;
+	scale: 5;
+	translate: 50% 50%;
+	z-index: 100;
+}
+
+.greeting-wrapper h2 {
+	font-size: 0.75rem;
+}
+
+.greeting-wrapper p {
+	font-size: 0.5rem;
+}
+
+.greeting-dark-mode {
+	color: rgb(245, 186, 15);
+}

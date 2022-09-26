@@ -1,0 +1,37 @@
+header {
+	background-color: rgb(245, 186, 15);
+	box-shadow: 0px 5px 10px black;
+	border-radius: 0 0 1rem 1rem;
+	padding: 0.75rem;
+	width: 100%;
+}
+.header-grid {
+	display: grid;
+	grid-template-columns: repeat(2, 1fr);
+}
+
+.header-title {
+	text-align: start;
+}
+.header-theme {
+	cursor: pointer;
+	text-align: end;
+	margin: auto 0;
+}
+
+.theme-button {
+	cursor: pointer;
+	background-color: transparent;
+	background-repeat: no-repeat;
+	border: none !important;
+}
+
+.header-dark-mode {
+	background-color: rgb(49, 46, 46);
+	box-shadow: 0px 0px 9px rgb(150, 149, 88);
+
+	color: rgb(245, 186, 15);
+}
+.header-dark-mode i {
+	color: rgb(245, 186, 15);
+}
