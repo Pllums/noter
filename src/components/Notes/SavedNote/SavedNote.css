@@ -29,6 +29,9 @@
 	color: rgb(245, 186, 15);
 	box-shadow: 0px 0px 9px rgb(150, 149, 88);
 }
+.saved-note-dark-mode button {
+	color: rgb(245, 186, 15);
+}
 
 .hide-initial-note {
 	display: none;

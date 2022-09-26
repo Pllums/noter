@@ -19,6 +19,7 @@
 	color: rgb(245, 186, 15);
 }
 
-.dark {
+.plus-circle-dark {
 	/* background-color: rgb(49, 46, 46); */
+	text-shadow: 0px 0px 8px rgb(245, 186, 15);
 }
