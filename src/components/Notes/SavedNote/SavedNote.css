@@ -12,6 +12,17 @@
 
 .note-content {
 }
+.edit-wrapper {
+	cursor: pointer;
+	margin: 0.2rem;
+	text-align: start;
+}
+.edit-button {
+	cursor: pointer;
+	background-color: transparent;
+	background-repeat: no-repeat;
+	border: none !important;
+}
 .delete-wrapper {
 	cursor: pointer;
 	margin: 0.2rem;
@@ -32,7 +43,6 @@
 .saved-note-dark-mode button {
 	color: rgb(245, 186, 15);
 }
-
 .hide-initial-note {
 	display: none;
 }

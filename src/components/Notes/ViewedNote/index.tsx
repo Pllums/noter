@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
-import "./NewNote.css";
+import "./ViewedNote.css";
 import { Theme, useTheme } from "../../ThemeProvider/ThemeContext";
 
 interface IProps {
@@ -18,7 +18,7 @@ const newNoteDarkMode: string = " dark";
 
 const dragConstraints = { top: 0, right: 0, bottom: 0, left: 0 };
 
-export default function NewNote(props: IProps) {
+export default function ViewedNote(props: IProps) {
 	const [note, setNote] = useState<IState["note"]>({ title: "", content: "" });
 
 	const { theme } = useTheme();
@@ -41,7 +41,7 @@ export default function NewNote(props: IProps) {
 	}
 	//Cancel saving the note
 	function abortNote() {
-		setNote({ title: "", content: "" });
+		setNote({ title: note.title, content: note.content });
 		props.cancelNote();
 	}
 
@@ -60,7 +60,7 @@ export default function NewNote(props: IProps) {
 			exit={{ opacity: 0 }}
 			transition={{ type: "spring", stiffness: 115, damping: 15 }}>
 			{/* <motion.form> */}
-			<h2>What's on your mind?</h2>
+			<h2>Need to make a change?</h2>
 			<motion.div className="note-input-wrapper">
 				<input
 					className="new-note-input"

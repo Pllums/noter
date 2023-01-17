@@ -7,7 +7,9 @@ interface IProps {
 	title: string;
 	content: string;
 	deleteNote: any;
+	editNote: any;
 	position: number | null;
+	layoutId: number;
 }
 
 let noteWrapperClasses: string = "saved-note-wrapper";
@@ -26,6 +28,10 @@ function SavedNote(props: IProps) {
 		props.deleteNote(props.position);
 	}
 
+	function handleEdit() {
+		props.editNote({ note });
+	}
+
 	return (
 		<motion.div
 			drag={true}
@@ -38,6 +44,15 @@ function SavedNote(props: IProps) {
 			<h2 className="note-title">{note.title}</h2>
 			<hr />
 			<p className="note-content">{note.content}</p>
+			<div className="edit-wrapper">
+				<motion.button
+					whileTap={{ scale: 0.9 }}
+					whileHover={{ scale: 1.1 }}
+					className="edit-button"
+					onClick={handleEdit}>
+					EDIT
+				</motion.button>
+			</div>
 			<div className="delete-wrapper">
 				<motion.button
 					whileTap={{ scale: 0.9 }}

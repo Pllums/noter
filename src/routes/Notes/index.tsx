@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import Greeting from "../Greeting";
 import Header from "../../components/Header";
 import NewNote from "../../components/Notes/NewNote";
+import ViewedNote from "../../components/Notes/ViewedNote";
 import NewNoteButton from "../../components/Notes/NewNoteButton";
 import SavedNote from "../../components/Notes/SavedNote";
 import { useTheme, Theme } from "../../components/ThemeProvider/ThemeContext";
@@ -13,7 +14,8 @@ import InitialNote from "../../components/Notes/SavedNote/initialNote";
 
 interface IState {
 	layoutId: string;
-	clicked: boolean;
+	newClicked: boolean;
+	editClicked: boolean;
 	notesArray: { title: string; content: string }[];
 	singleNote: { title: string; content: string };
 }
@@ -22,7 +24,8 @@ let notesPageClasses: string = "notes-page";
 const notesPageDark: string = " notes-page-dark-mode";
 
 export default function NotesPage() {
-	const [clicked, setClicked] = useState<IState["clicked"]>(false); // state for new note button click
+	const [newClicked, setNewClicked] = useState<IState["newClicked"]>(false); // state for new note button click
+	const [editClicked, setEditClicked] = useState<IState["editClicked"]>(false); // state for edit note button click
 	const [layoutId, setLayoutId] = useState<IState["layoutId"]>("");
 	const [notes, setNotes] = useState<IState["notesArray"]>([]); // state to hold array of notes before push to LS
 	const { theme, setTheme } = useTheme(); // custom hook to distribute theme using useContext
@@ -74,7 +77,7 @@ export default function NotesPage() {
 	//Open the New Note Form
 	function handleOpen() {
 		setLayoutId("newNote");
-		setClicked(true);
+		setNewClicked(true);
 	}
 
 	// Save and Delete Notes and Initial Note
@@ -82,22 +85,37 @@ export default function NotesPage() {
 		setNotes((prevNotes) => {
 			return [...prevNotes, newNote];
 		});
-		setClicked(false);
+		setNewClicked(false);
 	}
 
+	//Editing and Deleting of existing Notes
+
 	function deleteNote(note: any) {
+		alert("Are you sure you want to delete this note?"); //Create a user check to prevent someone from accidentally deleting a note
 		setNotes((prevNotes) => {
 			return prevNotes.filter((noteItem, index) => {
 				return index !== note;
 			});
 		});
 	}
+
+	function handleEdit() {
+		// Change layoutId later
+		setLayoutId("test");
+		setEditClicked(true);
+	}
+
 	function hideInitial() {
 		setShowInitNote(!showInitNote);
 	}
 
 	function cancelNote() {
-		setClicked(false);
+		if (newClicked) {
+			setNewClicked(!newClicked);
+		}
+		if (editClicked) {
+			setEditClicked(!editClicked);
+		}
 	}
 
 	//Setting the Theme
@@ -124,18 +142,29 @@ export default function NotesPage() {
 									<SavedNote
 										key={key}
 										position={key}
+										layoutId={key}
 										title={note.title}
 										content={note.content}
 										deleteNote={deleteNote}
+										editNote={handleEdit}
 									/>
 								))}
+							</AnimatePresence>
+							<AnimatePresence>
+								{editClicked && (
+									<ViewedNote
+										layoutId={"test"}
+										cancelNote={cancelNote}
+										addNote={handleSave}
+									/>
+								)}
 							</AnimatePresence>
 						</div>
 						<AnimatePresence>
 							<NewNoteButton openNew={handleOpen} />
 						</AnimatePresence>
 						<AnimatePresence>
-							{clicked && (
+							{newClicked && (
 								<NewNote
 									layoutId={layoutId}
 									cancelNote={cancelNote}
@@ -167,7 +196,7 @@ export default function NotesPage() {
 					<NewNoteButton openNew={handleOpen} />
 				</AnimatePresence>
 				<AnimatePresence>
-					{clicked && (
+					{newClicked && (
 						<NewNote
 							layoutId={layoutId}
 							cancelNote={cancelNote}
