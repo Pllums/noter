@@ -6,7 +6,9 @@ import { Theme, useTheme } from "../../ThemeProvider/ThemeContext";
 interface IProps {
 	layoutId: string; // potentially use array.index[] and then stringify to convert int to string to be usable by layout props
 	addNote: any;
-	cancelNote: () => void;
+	currentTitle: string;
+	currentContent: string;
+	cancelNote?: () => void;
 }
 
 interface IState {
@@ -19,7 +21,12 @@ const newNoteDarkMode: string = " dark";
 const dragConstraints = { top: 0, right: 0, bottom: 0, left: 0 };
 
 export default function ViewedNote(props: IProps) {
-	const [note, setNote] = useState<IState["note"]>({ title: "", content: "" });
+	//Setting beginning state of each editable note
+
+	const [note, setNote] = useState<IState["note"]>({
+		title: props.currentTitle,
+		content: props.currentContent,
+	});
 
 	const { theme } = useTheme();
 
@@ -28,6 +35,8 @@ export default function ViewedNote(props: IProps) {
 	} else {
 		newNoteClasses = "note-form-wrapper";
 	}
+
+	//Update the note title and content
 
 	function handleChange(
 		e:
@@ -39,10 +48,11 @@ export default function ViewedNote(props: IProps) {
 			return { ...prevNote, [name]: value };
 		});
 	}
+
 	//Cancel saving the note
 	function abortNote() {
 		setNote({ title: note.title, content: note.content });
-		props.cancelNote();
+		// props.cancelNote();
 	}
 
 	// No blank notes

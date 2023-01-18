@@ -26,6 +26,7 @@ const notesPageDark: string = " notes-page-dark-mode";
 export default function NotesPage() {
 	const [newClicked, setNewClicked] = useState<IState["newClicked"]>(false); // state for new note button click
 	const [editClicked, setEditClicked] = useState<IState["editClicked"]>(false); // state for edit note button click
+	const [editedNote, setEditedNote] = useState({ title: "", content: "" });
 	const [layoutId, setLayoutId] = useState<IState["layoutId"]>("");
 	const [notes, setNotes] = useState<IState["notesArray"]>([]); // state to hold array of notes before push to LS
 	const { theme, setTheme } = useTheme(); // custom hook to distribute theme using useContext
@@ -99,10 +100,12 @@ export default function NotesPage() {
 		});
 	}
 
-	function handleEdit() {
+	function handleEdit(note: { title: string; content: string }) {
 		// Change layoutId later
 		setLayoutId("test");
 		setEditClicked(true);
+		setEditedNote(note);
+		console.log(note);
 	}
 
 	function hideInitial() {
@@ -146,7 +149,7 @@ export default function NotesPage() {
 										title={note.title}
 										content={note.content}
 										deleteNote={deleteNote}
-										editNote={handleEdit}
+										editNote={() => handleEdit(note)}
 									/>
 								))}
 							</AnimatePresence>
@@ -154,6 +157,8 @@ export default function NotesPage() {
 								{editClicked && (
 									<ViewedNote
 										layoutId={"test"}
+										currentTitle={editedNote.title}
+										currentContent={editedNote.content}
 										cancelNote={cancelNote}
 										addNote={handleSave}
 									/>

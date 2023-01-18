@@ -1,4 +1,6 @@
-import { motion } from "framer-motion";
+import { useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
+import ViewedNote from "../ViewedNote";
 import { Theme, useTheme } from "../../ThemeProvider/ThemeContext";
 
 import "./SavedNote.css";
@@ -18,6 +20,7 @@ let noteDarkMode: string = " saved-note-dark-mode";
 function SavedNote(props: IProps) {
 	const note = { title: props.title, content: props.content };
 	const { theme, setTheme } = useTheme();
+	const [editClicked, setEditClicked] = useState(false);
 
 	if (theme === Theme.Dark) {
 		noteWrapperClasses += noteDarkMode;
@@ -28,8 +31,10 @@ function SavedNote(props: IProps) {
 		props.deleteNote(props.position);
 	}
 
-	function handleEdit() {
-		props.editNote({ note });
+	//Handle editing the note after creation
+
+	function handleEdit(note: {}) {
+		props.editNote();
 	}
 
 	return (
