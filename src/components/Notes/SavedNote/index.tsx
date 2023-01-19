@@ -11,7 +11,7 @@ interface IProps {
 	deleteNote: any;
 	editNote: any;
 	position: number | null;
-	layoutId: number;
+	layoutId: string;
 }
 
 let noteWrapperClasses: string = "saved-note-wrapper";
@@ -44,7 +44,7 @@ function SavedNote(props: IProps) {
 			initial={{ opacity: 0 }}
 			animate={{ opacity: 1 }}
 			exit={{ opacity: 0 }}
-			layoutId={note.title}
+			layoutId={props.layoutId}
 			className={noteWrapperClasses}>
 			<h2 className="note-title">{note.title}</h2>
 			<hr />

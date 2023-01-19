@@ -7,15 +7,14 @@ import ViewedNote from "../../components/Notes/ViewedNote";
 import NewNoteButton from "../../components/Notes/NewNoteButton";
 import SavedNote from "../../components/Notes/SavedNote";
 import { useTheme, Theme } from "../../components/ThemeProvider/ThemeContext";
-
-import { motion } from "framer-motion";
-import "./Notes.css";
 import InitialNote from "../../components/Notes/SavedNote/initialNote";
+import "./Notes.css";
 
 interface IState {
 	layoutId: string;
 	newClicked: boolean;
 	editClicked: boolean;
+	editedKey: string;
 	notesArray: { title: string; content: string }[];
 	singleNote: { title: string; content: string };
 }
@@ -27,7 +26,7 @@ export default function NotesPage() {
 	const [newClicked, setNewClicked] = useState<IState["newClicked"]>(false); // state for new note button click
 	const [editClicked, setEditClicked] = useState<IState["editClicked"]>(false); // state for edit note button click
 	const [editedNote, setEditedNote] = useState({ title: "", content: "" });
-	const [layoutId, setLayoutId] = useState<IState["layoutId"]>("");
+	const [editedKey, setEditedKey] = useState<IState["editedKey"]>();
 	const [notes, setNotes] = useState<IState["notesArray"]>([]); // state to hold array of notes before push to LS
 	const { theme, setTheme } = useTheme(); // custom hook to distribute theme using useContext
 	const [startGreeting, setStartGreeting] = useState(true); // state to control the opending greeting
@@ -77,7 +76,6 @@ export default function NotesPage() {
 
 	//Open the New Note Form
 	function handleOpen() {
-		setLayoutId("newNote");
 		setNewClicked(true);
 	}
 
@@ -100,12 +98,11 @@ export default function NotesPage() {
 		});
 	}
 
-	function handleEdit(note: { title: string; content: string }) {
+	function handleEdit(note: { title: string; content: string }, key: number) {
 		// Change layoutId later
-		setLayoutId("test");
 		setEditClicked(true);
 		setEditedNote(note);
-		console.log(note);
+		setEditedKey(key.toString());
 	}
 
 	function hideInitial() {
@@ -142,27 +139,29 @@ export default function NotesPage() {
 							{showInitNote ? <InitialNote deleteNote={hideInitial} /> : null}
 							<AnimatePresence>
 								{notes.map((note, key: number) => (
-									<SavedNote
-										key={key}
-										position={key}
-										layoutId={key}
-										title={note.title}
-										content={note.content}
-										deleteNote={deleteNote}
-										editNote={() => handleEdit(note)}
-									/>
+									<>
+										<SavedNote
+											key={key}
+											position={key}
+											layoutId={key.toString()}
+											title={note.title}
+											content={note.content}
+											deleteNote={deleteNote}
+											editNote={() => handleEdit(note, key)}
+										/>
+										<AnimatePresence>
+											{editClicked && (
+												<ViewedNote
+													layoutId={editedKey}
+													currentTitle={editedNote.title}
+													currentContent={editedNote.content}
+													cancelNote={cancelNote}
+													addNote={handleSave}
+												/>
+											)}
+										</AnimatePresence>
+									</>
 								))}
-							</AnimatePresence>
-							<AnimatePresence>
-								{editClicked && (
-									<ViewedNote
-										layoutId={"test"}
-										currentTitle={editedNote.title}
-										currentContent={editedNote.content}
-										cancelNote={cancelNote}
-										addNote={handleSave}
-									/>
-								)}
 							</AnimatePresence>
 						</div>
 						<AnimatePresence>
@@ -171,7 +170,7 @@ export default function NotesPage() {
 						<AnimatePresence>
 							{newClicked && (
 								<NewNote
-									layoutId={layoutId}
+									layoutId={"newNote"}
 									cancelNote={cancelNote}
 									addNote={handleSave}
 								/>
@@ -180,36 +179,6 @@ export default function NotesPage() {
 					</>
 				)}
 			</AnimatePresence>
-
-			{/* <>
-				<Header toggleTheme={toggleTheme} />
-				<div className="notes-grid">
-					{showInitNote ? <InitialNote deleteNote={hideInitial} /> : null}
-					<AnimatePresence>
-						{notes.map((note, key: number) => (
-							<SavedNote
-								key={key}
-								position={key}
-								title={note.title}
-								content={note.content}
-								deleteNote={deleteNote}
-							/>
-						))}
-					</AnimatePresence>
-				</div>
-				<AnimatePresence>
-					<NewNoteButton openNew={handleOpen} />
-				</AnimatePresence>
-				<AnimatePresence>
-					{newClicked && (
-						<NewNote
-							layoutId={layoutId}
-							cancelNote={cancelNote}
-							addNote={handleSave}
-						/>
-					)}
-				</AnimatePresence>
-			</> */}
 		</section>
 	);
 }

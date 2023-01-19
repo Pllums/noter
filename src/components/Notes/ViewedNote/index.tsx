@@ -4,11 +4,11 @@ import "./ViewedNote.css";
 import { Theme, useTheme } from "../../ThemeProvider/ThemeContext";
 
 interface IProps {
-	layoutId: string; // potentially use array.index[] and then stringify to convert int to string to be usable by layout props
+	layoutId?: string; // potentially use array.index[] and then stringify to convert int to string to be usable by layout props
 	addNote: any;
 	currentTitle: string;
 	currentContent: string;
-	cancelNote?: () => void;
+	cancelNote: () => void;
 }
 
 interface IState {
@@ -18,7 +18,7 @@ interface IState {
 let newNoteClasses: string = "note-form-wrapper";
 const newNoteDarkMode: string = " dark";
 
-const dragConstraints = { top: 0, right: 0, bottom: 0, left: 0 };
+// const dragConstraints = { top: 0, right: 0, bottom: 0, left: 0 };
 
 export default function ViewedNote(props: IProps) {
 	//Setting beginning state of each editable note
@@ -52,7 +52,7 @@ export default function ViewedNote(props: IProps) {
 	//Cancel saving the note
 	function abortNote() {
 		setNote({ title: note.title, content: note.content });
-		// props.cancelNote();
+		props.cancelNote();
 	}
 
 	// No blank notes

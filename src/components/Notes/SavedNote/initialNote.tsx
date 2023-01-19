@@ -38,9 +38,9 @@ function InitialNote(props: IProps) {
 			<h2 className="note-title">Hey there 👋</h2>
 			<hr />
 			<p className="note-content">
-				"I'm a note. You can drag me around or delete me if you wish. Oh, and
+				I'm a note. You can drag me around or delete me if you wish. Oh, and
 				don't forget to make new notes by hitting the plus sign in the corner of
-				the page!"
+				the page!
 			</p>
 			<div className="delete-wrapper">
 				<motion.button
