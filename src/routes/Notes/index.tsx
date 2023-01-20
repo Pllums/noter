@@ -14,7 +14,7 @@ interface IState {
 	layoutId: string;
 	newClicked: boolean;
 	editClicked: boolean;
-	editedKey: string;
+	editedKey: number;
 	notesArray: { title: string; content: string }[];
 	singleNote: { title: string; content: string };
 }
@@ -26,7 +26,7 @@ export default function NotesPage() {
 	const [newClicked, setNewClicked] = useState<IState["newClicked"]>(false); // state for new note button click
 	const [editClicked, setEditClicked] = useState<IState["editClicked"]>(false); // state for edit note button click
 	const [editedNote, setEditedNote] = useState({ title: "", content: "" });
-	const [editedKey, setEditedKey] = useState<IState["editedKey"]>();
+	const [editedKey, setEditedKey] = useState<IState["editedKey"]>(0);
 	const [notes, setNotes] = useState<IState["notesArray"]>([]); // state to hold array of notes before push to LS
 	const { theme, setTheme } = useTheme(); // custom hook to distribute theme using useContext
 	const [startGreeting, setStartGreeting] = useState(true); // state to control the opending greeting
@@ -79,12 +79,27 @@ export default function NotesPage() {
 		setNewClicked(true);
 	}
 
+	function handleEdit(note: { title: string; content: string }, key: number) {
+		setEditClicked(true);
+		setEditedNote(note);
+		setEditedKey(key);
+	}
+
 	// Save and Delete Notes and Initial Note
-	function handleSave(newNote: any) {
-		setNotes((prevNotes) => {
-			return [...prevNotes, newNote];
-		});
-		setNewClicked(false);
+	function handleSave(newNote: { title: string; content: string }) {
+		// console.log(newNote);
+
+		if (newClicked) {
+			setNotes((prevNotes) => {
+				return [...prevNotes, newNote];
+			});
+			setNewClicked(false);
+		} else if (editClicked) {
+			notes[editedKey].title = newNote.title;
+			notes[editedKey].content = newNote.content;
+			console.log(notes[editedKey]);
+			setEditClicked(!editClicked);
+		}
 	}
 
 	//Editing and Deleting of existing Notes
@@ -96,13 +111,6 @@ export default function NotesPage() {
 				return index !== note;
 			});
 		});
-	}
-
-	function handleEdit(note: { title: string; content: string }, key: number) {
-		// Change layoutId later
-		setEditClicked(true);
-		setEditedNote(note);
-		setEditedKey(key.toString());
 	}
 
 	function hideInitial() {
@@ -152,11 +160,12 @@ export default function NotesPage() {
 										<AnimatePresence>
 											{editClicked && (
 												<ViewedNote
-													layoutId={editedKey}
+													key={key}
+													layoutId={editedKey.toString()}
 													currentTitle={editedNote.title}
 													currentContent={editedNote.content}
 													cancelNote={cancelNote}
-													addNote={handleSave}
+													saveEdit={handleSave}
 												/>
 											)}
 										</AnimatePresence>

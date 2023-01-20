@@ -49,7 +49,7 @@ export default function NewNote(props: IProps) {
 	function saveNote() {
 		if (note.title !== "" && note.content !== "") {
 			props.addNote(note);
-		} else console.log("One or more fields is empty. Note not saved.");
+		} else alert("One or more fields is empty. Note not saved.");
 	}
 
 	return (

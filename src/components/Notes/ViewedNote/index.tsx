@@ -1,11 +1,11 @@
-import { useState } from "react";
+import { createContext, useContext, useState } from "react";
 import { motion } from "framer-motion";
-import "./ViewedNote.css";
 import { Theme, useTheme } from "../../ThemeProvider/ThemeContext";
+import "./ViewedNote.css";
 
 interface IProps {
 	layoutId?: string; // potentially use array.index[] and then stringify to convert int to string to be usable by layout props
-	addNote: any;
+	saveEdit: any;
 	currentTitle: string;
 	currentContent: string;
 	cancelNote: () => void;
@@ -58,8 +58,11 @@ export default function ViewedNote(props: IProps) {
 	// No blank notes
 	function saveNote() {
 		if (note.title !== "" && note.content !== "") {
-			props.addNote(note);
-		} else console.log("One or more fields is empty. Note not saved.");
+			props.saveEdit(note);
+			console.log(note);
+		} else if (note.title === "" || note.content === "") {
+			alert("One or more fields is empty. Note not saved.");
+		}
 	}
 
 	return (

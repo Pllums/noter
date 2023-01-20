@@ -1,7 +1,7 @@
 import { useState } from "react";
-import { AnimatePresence, motion } from "framer-motion";
-import ViewedNote from "../ViewedNote";
+import { motion } from "framer-motion";
 import { Theme, useTheme } from "../../ThemeProvider/ThemeContext";
+import ViewedNote from "../ViewedNote";
 
 import "./SavedNote.css";
 
