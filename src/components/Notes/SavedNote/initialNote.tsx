@@ -15,7 +15,7 @@ let noteWrapperClasses: string = "saved-note-wrapper";
 let noteDarkMode: string = " saved-note-dark-mode";
 
 function InitialNote(props: IProps) {
-	const { theme, setTheme } = useTheme();
+	const { theme } = useTheme();
 	const [isShown, setIsShown] = useState(true);
 
 	if (theme === Theme.Dark) {
@@ -38,17 +38,18 @@ function InitialNote(props: IProps) {
 			<h2 className="note-title">Hey there 👋</h2>
 			<hr />
 			<p className="note-content">
-				"I'm a note. You can drag me around or delete me if you wish. Oh, and
+				I'm a note. You can drag me around or delete me if you wish. Oh, and
 				don't forget to make new notes by hitting the plus sign in the corner of
-				the page!"
+				the page!
 			</p>
-			<div className="delete-wrapper">
+			<div className="edit-wrapper">
 				<motion.button
-					whileTap={{ scale: 0.9 }}
-					whileHover={{ scale: 1.1 }}
+					initial={{ scale: 2 }}
+					whileTap={{ scale: 1.5 }}
+					whileHover={{ scale: 2.1 }}
 					className="delete-button"
 					onClick={() => handleDelete()}>
-					DELETE
+					<i className="fa-solid fa-trash-can"></i>
 				</motion.button>
 				{/* input an "X" button here later  */}
 			</div>

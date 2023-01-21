@@ -3,17 +3,19 @@ import { useEffect, useState } from "react";
 import Greeting from "../Greeting";
 import Header from "../../components/Header";
 import NewNote from "../../components/Notes/NewNote";
+import ViewedNote from "../../components/Notes/ViewedNote";
 import NewNoteButton from "../../components/Notes/NewNoteButton";
 import SavedNote from "../../components/Notes/SavedNote";
 import { useTheme, Theme } from "../../components/ThemeProvider/ThemeContext";
-
-import { motion } from "framer-motion";
-import "./Notes.css";
 import InitialNote from "../../components/Notes/SavedNote/initialNote";
+import DeleteCheck from "../../components/Notes/DeleteCheck";
+import "./Notes.css";
 
 interface IState {
 	layoutId: string;
-	clicked: boolean;
+	newClicked: boolean;
+	editClicked: boolean;
+	editedKey: number;
 	notesArray: { title: string; content: string }[];
 	singleNote: { title: string; content: string };
 }
@@ -22,8 +24,13 @@ let notesPageClasses: string = "notes-page";
 const notesPageDark: string = " notes-page-dark-mode";
 
 export default function NotesPage() {
-	const [clicked, setClicked] = useState<IState["clicked"]>(false); // state for new note button click
-	const [layoutId, setLayoutId] = useState<IState["layoutId"]>("");
+	const [newClicked, setNewClicked] = useState<IState["newClicked"]>(false); // state for new note button click
+	const [editClicked, setEditClicked] = useState<IState["editClicked"]>(false); // state for edit note button click
+	const [editedNote, setEditedNote] = useState({ title: "", content: "" });
+	const [editedKey, setEditedKey] = useState<IState["editedKey"]>(0);
+	const [deleteClicked, setDeleteClicked] = useState(false);
+	const [deleteChoice, setDeleteChoice] = useState(Number);
+
 	const [notes, setNotes] = useState<IState["notesArray"]>([]); // state to hold array of notes before push to LS
 	const { theme, setTheme } = useTheme(); // custom hook to distribute theme using useContext
 	const [startGreeting, setStartGreeting] = useState(true); // state to control the opending greeting
@@ -73,16 +80,47 @@ export default function NotesPage() {
 
 	//Open the New Note Form
 	function handleOpen() {
-		setLayoutId("newNote");
-		setClicked(true);
+		setNewClicked(true);
+	}
+
+	function handleEdit(note: { title: string; content: string }, key: number) {
+		setEditClicked(true);
+		setEditedNote(note);
+		setEditedKey(key);
 	}
 
 	// Save and Delete Notes and Initial Note
-	function handleSave(newNote: any) {
-		setNotes((prevNotes) => {
-			return [...prevNotes, newNote];
-		});
-		setClicked(false);
+	function handleSave(newNote: { title: string; content: string }) {
+		// console.log(newNote);
+
+		if (newClicked) {
+			setNotes((prevNotes) => {
+				return [...prevNotes, newNote];
+			});
+			setNewClicked(false);
+		} else if (editClicked) {
+			notes[editedKey].title = newNote.title;
+			notes[editedKey].content = newNote.content;
+			console.log(notes[editedKey]);
+			setEditClicked(!editClicked);
+		}
+	}
+
+	//Editing and Deleting of existing Notes
+
+	function clickDelete(position: number) {
+		setDeleteClicked(!deleteClicked);
+		setDeleteChoice(position);
+	}
+
+	function checkDelete(key: number) {
+		console.log(deleteChoice);
+
+		if (key >= 0) {
+			deleteNote(deleteChoice);
+			setDeleteClicked(!deleteClicked);
+		} else alert("Note was not deleted.");
+		setDeleteClicked(!deleteClicked);
 	}
 
 	function deleteNote(note: any) {
@@ -96,8 +134,17 @@ export default function NotesPage() {
 		setShowInitNote(!showInitNote);
 	}
 
-	function cancelNote() {
-		setClicked(false);
+	function cancel() {
+		if (newClicked) {
+			setNewClicked(!newClicked);
+		}
+		if (editClicked) {
+			setEditClicked(!editClicked);
+		}
+		if (deleteClicked) {
+			alert("Note was not deleted");
+			setDeleteClicked(!deleteClicked);
+		}
 	}
 
 	//Setting the Theme
@@ -121,13 +168,35 @@ export default function NotesPage() {
 							{showInitNote ? <InitialNote deleteNote={hideInitial} /> : null}
 							<AnimatePresence>
 								{notes.map((note, key: number) => (
-									<SavedNote
-										key={key}
-										position={key}
-										title={note.title}
-										content={note.content}
-										deleteNote={deleteNote}
-									/>
+									<>
+										<SavedNote
+											key={key}
+											position={key}
+											layoutId={key.toString()}
+											title={note.title}
+											content={note.content}
+											deleteNote={clickDelete}
+											editNote={() => handleEdit(note, key)}
+										/>
+										{deleteClicked && (
+											<DeleteCheck
+												noButton={cancel}
+												yesButton={() => checkDelete(deleteChoice)}
+											/>
+										)}
+										<AnimatePresence>
+											{editClicked && (
+												<ViewedNote
+													key={key}
+													layoutId={editedKey.toString()}
+													currentTitle={editedNote.title}
+													currentContent={editedNote.content}
+													cancelNote={cancel}
+													saveEdit={handleSave}
+												/>
+											)}
+										</AnimatePresence>
+									</>
 								))}
 							</AnimatePresence>
 						</div>
@@ -135,10 +204,10 @@ export default function NotesPage() {
 							<NewNoteButton openNew={handleOpen} />
 						</AnimatePresence>
 						<AnimatePresence>
-							{clicked && (
+							{newClicked && (
 								<NewNote
-									layoutId={layoutId}
-									cancelNote={cancelNote}
+									layoutId={"newNote"}
+									cancelNote={cancel}
 									addNote={handleSave}
 								/>
 							)}
@@ -146,36 +215,6 @@ export default function NotesPage() {
 					</>
 				)}
 			</AnimatePresence>
-
-			{/* <>
-				<Header toggleTheme={toggleTheme} />
-				<div className="notes-grid">
-					{showInitNote ? <InitialNote deleteNote={hideInitial} /> : null}
-					<AnimatePresence>
-						{notes.map((note, key: number) => (
-							<SavedNote
-								key={key}
-								position={key}
-								title={note.title}
-								content={note.content}
-								deleteNote={deleteNote}
-							/>
-						))}
-					</AnimatePresence>
-				</div>
-				<AnimatePresence>
-					<NewNoteButton openNew={handleOpen} />
-				</AnimatePresence>
-				<AnimatePresence>
-					{clicked && (
-						<NewNote
-							layoutId={layoutId}
-							cancelNote={cancelNote}
-							addNote={handleSave}
-						/>
-					)}
-				</AnimatePresence>
-			</> */}
 		</section>
 	);
 }

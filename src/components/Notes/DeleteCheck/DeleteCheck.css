@@ -1,0 +1,23 @@
+.delete-check-wrapper {
+	background-color: rgb(186, 187, 189);
+	border-radius: 1.5rem;
+	box-shadow: 0px 5px 10px black;
+	display: flex;
+	flex-direction: column;
+	flex-grow: 1;
+	align-items: center;
+	position: absolute;
+	top: 7rem;
+	left: 50%;
+	translate: -50%;
+	width: clamp(35%, 300px, 75%);
+	padding: 1.5rem;
+}
+
+.delete-options {
+	display: flex;
+}
+
+.delete-options button {
+	margin: auto;
+}

@@ -1,10 +1,11 @@
 .greeting-wrapper {
-	position: absolute;
-	left: 50%;
+	position: fixed;
 	top: 50%;
+	left: 50%;
 	text-align: center;
 	scale: 5;
-	translate: 50% 50%;
+	translate: -50% -50%;
+	-webkit-transfrom: translate(-50% -50%);
 	z-index: 100;
 }
 .greeting-wrapper h1 {

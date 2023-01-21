@@ -1,11 +1,13 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
-import "./NewNote.css";
 import { Theme, useTheme } from "../../ThemeProvider/ThemeContext";
+import "./ViewedNote.css";
 
 interface IProps {
-	layoutId: string; // potentially use array.index[] and then stringify to convert int to string to be usable by layout props
-	addNote: any;
+	layoutId?: string; // potentially use array.index[] and then stringify to convert int to string to be usable by layout props
+	saveEdit: any;
+	currentTitle: string;
+	currentContent: string;
 	cancelNote: () => void;
 }
 
@@ -18,8 +20,13 @@ const newNoteDarkMode: string = " dark";
 
 // const dragConstraints = { top: 0, right: 0, bottom: 0, left: 0 };
 
-export default function NewNote(props: IProps) {
-	const [note, setNote] = useState<IState["note"]>({ title: "", content: "" });
+export default function ViewedNote(props: IProps) {
+	//Setting beginning state of each editable note
+
+	const [note, setNote] = useState<IState["note"]>({
+		title: props.currentTitle,
+		content: props.currentContent,
+	});
 
 	const { theme } = useTheme();
 
@@ -28,6 +35,8 @@ export default function NewNote(props: IProps) {
 	} else {
 		newNoteClasses = "note-form-wrapper";
 	}
+
+	//Update the note title and content
 
 	function handleChange(
 		e:
@@ -42,15 +51,18 @@ export default function NewNote(props: IProps) {
 
 	//Cancel saving the note
 	function abortNote() {
-		setNote({ title: "", content: "" });
+		setNote({ title: note.title, content: note.content });
 		props.cancelNote();
 	}
 
 	// No blank notes
 	function saveNote() {
 		if (note.title !== "" && note.content !== "") {
-			props.addNote(note);
-		} else alert("One or more fields is empty. Note not saved.");
+			props.saveEdit(note);
+			console.log(note);
+		} else if (note.title === "" || note.content === "") {
+			alert("One or more fields is empty. Note not saved.");
+		}
 	}
 
 	return (
@@ -61,7 +73,7 @@ export default function NewNote(props: IProps) {
 			exit={{ opacity: 0 }}
 			transition={{ type: "spring", stiffness: 115, damping: 15 }}>
 			{/* <motion.form> */}
-			<h2>What's on your mind?</h2>
+			<h2>Need to make a change?</h2>
 			<motion.div className="note-input-wrapper">
 				<input
 					className="new-note-input"
