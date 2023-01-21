@@ -8,6 +8,7 @@ import NewNoteButton from "../../components/Notes/NewNoteButton";
 import SavedNote from "../../components/Notes/SavedNote";
 import { useTheme, Theme } from "../../components/ThemeProvider/ThemeContext";
 import InitialNote from "../../components/Notes/SavedNote/initialNote";
+import DeleteCheck from "../../components/Notes/DeleteCheck";
 import "./Notes.css";
 
 interface IState {
@@ -27,6 +28,9 @@ export default function NotesPage() {
 	const [editClicked, setEditClicked] = useState<IState["editClicked"]>(false); // state for edit note button click
 	const [editedNote, setEditedNote] = useState({ title: "", content: "" });
 	const [editedKey, setEditedKey] = useState<IState["editedKey"]>(0);
+	const [deleteClicked, setDeleteClicked] = useState(false);
+	const [deleteChoice, setDeleteChoice] = useState(Number);
+
 	const [notes, setNotes] = useState<IState["notesArray"]>([]); // state to hold array of notes before push to LS
 	const { theme, setTheme } = useTheme(); // custom hook to distribute theme using useContext
 	const [startGreeting, setStartGreeting] = useState(true); // state to control the opending greeting
@@ -104,25 +108,42 @@ export default function NotesPage() {
 
 	//Editing and Deleting of existing Notes
 
+	function clickDelete(position: number) {
+		setDeleteClicked(!deleteClicked);
+		setDeleteChoice(position);
+	}
+
+	function checkDelete(key: number) {
+		console.log(deleteChoice);
+
+		if (key >= 0) {
+			deleteNote(deleteChoice);
+			setDeleteClicked(!deleteClicked);
+		} else alert("Note was not deleted.");
+		setDeleteClicked(!deleteClicked);
+	}
+
 	function deleteNote(note: any) {
-		alert("Are you sure you want to delete this note?"); //Create a user check to prevent someone from accidentally deleting a note
 		setNotes((prevNotes) => {
 			return prevNotes.filter((noteItem, index) => {
 				return index !== note;
 			});
 		});
 	}
-
 	function hideInitial() {
 		setShowInitNote(!showInitNote);
 	}
 
-	function cancelNote() {
+	function cancel() {
 		if (newClicked) {
 			setNewClicked(!newClicked);
 		}
 		if (editClicked) {
 			setEditClicked(!editClicked);
+		}
+		if (deleteClicked) {
+			alert("Note was not deleted");
+			setDeleteClicked(!deleteClicked);
 		}
 	}
 
@@ -154,9 +175,15 @@ export default function NotesPage() {
 											layoutId={key.toString()}
 											title={note.title}
 											content={note.content}
-											deleteNote={deleteNote}
+											deleteNote={clickDelete}
 											editNote={() => handleEdit(note, key)}
 										/>
+										{deleteClicked && (
+											<DeleteCheck
+												noButton={cancel}
+												yesButton={() => checkDelete(deleteChoice)}
+											/>
+										)}
 										<AnimatePresence>
 											{editClicked && (
 												<ViewedNote
@@ -164,7 +191,7 @@ export default function NotesPage() {
 													layoutId={editedKey.toString()}
 													currentTitle={editedNote.title}
 													currentContent={editedNote.content}
-													cancelNote={cancelNote}
+													cancelNote={cancel}
 													saveEdit={handleSave}
 												/>
 											)}
@@ -180,7 +207,7 @@ export default function NotesPage() {
 							{newClicked && (
 								<NewNote
 									layoutId={"newNote"}
-									cancelNote={cancelNote}
+									cancelNote={cancel}
 									addNote={handleSave}
 								/>
 							)}

@@ -1,4 +1,4 @@
-import { createContext, useContext, useState } from "react";
+import { useState } from "react";
 import { motion } from "framer-motion";
 import { Theme, useTheme } from "../../ThemeProvider/ThemeContext";
 import "./ViewedNote.css";

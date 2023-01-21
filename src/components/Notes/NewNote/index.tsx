@@ -16,7 +16,7 @@ interface IState {
 let newNoteClasses: string = "note-form-wrapper";
 const newNoteDarkMode: string = " dark";
 
-const dragConstraints = { top: 0, right: 0, bottom: 0, left: 0 };
+// const dragConstraints = { top: 0, right: 0, bottom: 0, left: 0 };
 
 export default function NewNote(props: IProps) {
 	const [note, setNote] = useState<IState["note"]>({ title: "", content: "" });
@@ -39,6 +39,7 @@ export default function NewNote(props: IProps) {
 			return { ...prevNote, [name]: value };
 		});
 	}
+
 	//Cancel saving the note
 	function abortNote() {
 		setNote({ title: "", content: "" });

@@ -15,7 +15,7 @@ let noteWrapperClasses: string = "saved-note-wrapper";
 let noteDarkMode: string = " saved-note-dark-mode";
 
 function InitialNote(props: IProps) {
-	const { theme, setTheme } = useTheme();
+	const { theme } = useTheme();
 	const [isShown, setIsShown] = useState(true);
 
 	if (theme === Theme.Dark) {
@@ -42,13 +42,14 @@ function InitialNote(props: IProps) {
 				don't forget to make new notes by hitting the plus sign in the corner of
 				the page!
 			</p>
-			<div className="delete-wrapper">
+			<div className="edit-wrapper">
 				<motion.button
-					whileTap={{ scale: 0.9 }}
-					whileHover={{ scale: 1.1 }}
+					initial={{ scale: 2 }}
+					whileTap={{ scale: 1.5 }}
+					whileHover={{ scale: 2.1 }}
 					className="delete-button"
 					onClick={() => handleDelete()}>
-					DELETE
+					<i className="fa-solid fa-trash-can"></i>
 				</motion.button>
 				{/* input an "X" button here later  */}
 			</div>

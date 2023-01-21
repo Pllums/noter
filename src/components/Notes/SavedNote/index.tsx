@@ -1,8 +1,7 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { Theme, useTheme } from "../../ThemeProvider/ThemeContext";
-import ViewedNote from "../ViewedNote";
-
+import DeleteCheck from "../DeleteCheck";
 import "./SavedNote.css";
 
 interface IProps {
@@ -19,14 +18,15 @@ let noteDarkMode: string = " saved-note-dark-mode";
 
 function SavedNote(props: IProps) {
 	const note = { title: props.title, content: props.content };
-	const { theme, setTheme } = useTheme();
-	const [editClicked, setEditClicked] = useState(false);
+	const [deleteOption, setDeleteOption] = useState(Boolean);
+	const { theme } = useTheme();
 
 	if (theme === Theme.Dark) {
 		noteWrapperClasses += noteDarkMode;
 	} else {
 		noteWrapperClasses = "saved-note-wrapper";
 	}
+
 	function handleDelete() {
 		props.deleteNote(props.position);
 	}
@@ -51,22 +51,21 @@ function SavedNote(props: IProps) {
 			<p className="note-content">{note.content}</p>
 			<div className="edit-wrapper">
 				<motion.button
-					whileTap={{ scale: 0.9 }}
-					whileHover={{ scale: 1.1 }}
+					initial={{ scale: 2 }}
+					whileTap={{ scale: 1.5 }}
+					whileHover={{ scale: 2.1 }}
 					className="edit-button"
 					onClick={handleEdit}>
-					EDIT
+					<i className="fa-regular fa-pen-to-square"></i>
 				</motion.button>
-			</div>
-			<div className="delete-wrapper">
 				<motion.button
-					whileTap={{ scale: 0.9 }}
-					whileHover={{ scale: 1.1 }}
+					initial={{ scale: 2 }}
+					whileTap={{ scale: 1.5 }}
+					whileHover={{ scale: 2.1 }}
 					className="delete-button"
 					onClick={handleDelete}>
-					DELETE
+					<i className="fa-solid fa-trash-can"></i>
 				</motion.button>
-				{/* input an "X" button here later  */}
 			</div>
 		</motion.div>
 	);
