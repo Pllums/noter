@@ -27,7 +27,7 @@
 	top: 7rem;
 	left: 50%;
 	translate: -50%;
-	width: clamp(35%, 400px, 75%);
+	width: clamp(35%, 300px, 75%);
 	padding: 1.5rem;
 }
 

@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { motion } from "framer-motion";
+// import { useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
 import { Theme, useTheme } from "../../ThemeProvider/ThemeContext";
 import "./DeleteCheck.css";
 
@@ -9,7 +9,7 @@ interface IProps {
 }
 
 let deleteWrapperClasses = "delete-check-wrapper";
-let deleteDarkMode = " delete-dark-mode";
+let deleteDarkMode = " dark";
 
 export default function DeleteCheck(props: IProps) {
 	const { theme } = useTheme();
@@ -21,16 +21,30 @@ export default function DeleteCheck(props: IProps) {
 	}
 
 	return (
-		<motion.div className={deleteWrapperClasses}>
-			<h2>Confirm Delete?</h2>
-			<div className="delete-options">
-				<motion.button className="options-buttons" onClick={props.noButton}>
-					No, keep it
-				</motion.button>
-				<motion.button className="options-buttons" onClick={props.yesButton}>
-					Yes, trash it
-				</motion.button>
-			</div>
-		</motion.div>
+		<AnimatePresence>
+			<motion.div
+				className={deleteWrapperClasses}
+				initial={{ opacity: 0, scale: 0 }}
+				animate={{ opacity: 1, scale: 1 }}
+				transition={{ duration: 0.3 }}>
+				<h2>Confirm Delete?</h2>
+				<div className="delete-options">
+					<motion.button
+						className="options-buttons"
+						onClick={props.noButton}
+						whileHover={{ scale: 1.1 }}
+						whileTap={{ scale: 0.9 }}>
+						No, keep it
+					</motion.button>
+					<motion.button
+						className="options-buttons"
+						onClick={props.yesButton}
+						whileHover={{ scale: 1.1 }}
+						whileTap={{ scale: 0.9 }}>
+						Yes, trash it
+					</motion.button>
+				</div>
+			</motion.div>
+		</AnimatePresence>
 	);
 }
