@@ -1,7 +1,5 @@
-import { useState } from "react";
 import { motion } from "framer-motion";
 import { Theme, useTheme } from "../../ThemeProvider/ThemeContext";
-import DeleteCheck from "../DeleteCheck";
 import "./SavedNote.css";
 
 interface IProps {
@@ -18,7 +16,6 @@ let noteDarkMode: string = " saved-note-dark-mode";
 
 function SavedNote(props: IProps) {
 	const note = { title: props.title, content: props.content };
-	const [deleteOption, setDeleteOption] = useState(Boolean);
 	const { theme } = useTheme();
 
 	if (theme === Theme.Dark) {
