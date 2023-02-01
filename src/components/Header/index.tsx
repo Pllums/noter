@@ -1,4 +1,6 @@
 import { AnimatePresence, motion } from "framer-motion";
+import { useContext } from "react";
+import { UserContext } from "../../App";
 import { Theme, useTheme } from "../ThemeProvider/ThemeContext";
 import "./Header.css";
 
@@ -19,6 +21,7 @@ const headerDarkMode: string = " header-dark-mode";
 
 export default function Header(props: IProps) {
 	const { theme } = useTheme();
+	const { session } = useContext(UserContext);
 
 	if (theme === Theme.Dark) {
 		headerClasses += headerDarkMode;
@@ -31,6 +34,7 @@ export default function Header(props: IProps) {
 				<div className="header-title">
 					<motion.h1 layoutId="noter">Noter</motion.h1>
 				</div>
+				<div>{session?.user ? "User is logged in" : "User is logged out"}</div>
 				<div className="header-theme" onClick={props.toggleTheme}>
 					<span>Toggle Theme:</span>{" "}
 					<AnimatePresence>
