@@ -22,7 +22,7 @@ export default function NewNoteButton(props: IProps) {
 		<>
 			<motion.div
 				whileHover={{ scale: 1.1 }}
-				whileTap={{ scale: 0.9 }}
+				whileTap={{ scale: 0.9, rotate: 180, transition: { duration: 0.3 } }}
 				// initial={{ scale: 0, opacity: 0 }}
 				animate={{ scale: 1, opacity: 1 }}
 				// exit={{ scale: 0, opacity: 0 }}

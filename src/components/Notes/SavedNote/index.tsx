@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { motion } from "framer-motion";
+import { motion, useDragControls } from "framer-motion";
 import { Theme, useTheme } from "../../ThemeProvider/ThemeContext";
 import DeleteCheck from "../DeleteCheck";
 import "./SavedNote.css";
@@ -17,6 +17,7 @@ let noteWrapperClasses: string = "saved-note-wrapper";
 let noteDarkMode: string = " saved-note-dark-mode";
 
 function SavedNote(props: IProps) {
+	const dragControls = useDragControls();
 	const note = { title: props.title, content: props.content };
 	const [deleteOption, setDeleteOption] = useState(Boolean);
 	const { theme } = useTheme();
@@ -25,6 +26,10 @@ function SavedNote(props: IProps) {
 		noteWrapperClasses += noteDarkMode;
 	} else {
 		noteWrapperClasses = "saved-note-wrapper";
+	}
+
+	function startDrag(event: any) {
+		dragControls.start(event);
 	}
 
 	function handleDelete() {
@@ -39,17 +44,20 @@ function SavedNote(props: IProps) {
 
 	return (
 		<motion.div
-			drag={true}
+			drag
 			dragMomentum={false}
+			dragControls={dragControls}
+			dragListener={false}
 			initial={{ opacity: 0 }}
 			animate={{ opacity: 1 }}
 			exit={{ opacity: 0 }}
 			layoutId={props.layoutId}
 			className={noteWrapperClasses}>
-			<h2 className="note-title">{note.title}</h2>
-			<hr />
-			<p className="note-content">{note.content}</p>
-			<div className="edit-wrapper">
+			<div className="drag-div" onPointerDown={startDrag}></div>
+			<motion.h2 className="note-title">{note.title}</motion.h2>
+			<motion.hr />
+			<motion.p className="note-content">{note.content}</motion.p>
+			<motion.div className="edit-wrapper">
 				<motion.button
 					initial={{ scale: 2 }}
 					whileTap={{ scale: 1.5 }}
@@ -66,7 +74,7 @@ function SavedNote(props: IProps) {
 					onClick={handleDelete}>
 					<i className="fa-solid fa-trash-can"></i>
 				</motion.button>
-			</div>
+			</motion.div>
 		</motion.div>
 	);
 }

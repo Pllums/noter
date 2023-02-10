@@ -1,11 +1,12 @@
 .saved-note-wrapper {
-	padding: 0.75rem;
 	background-color: rgb(245, 186, 15);
 	border-radius: 0.25rem;
 	box-shadow: 0px 5px 10px black;
-	position: relative;
 	display: flex;
 	flex-direction: column;
+	min-height: 15rem;
+	padding: 0.75rem;
+	position: relative;
 }
 
 .note-title {
@@ -15,6 +16,15 @@
 
 .note-content {
 	flex-grow: 1;
+}
+
+.drag-div {
+	border-radius: 0.25rem;
+	width: auto;
+	height: 10%;
+	position: relative;
+	margin-top: -0.75rem;
+	margin-inline: -0.75rem;
 }
 
 .edit-wrapper {
